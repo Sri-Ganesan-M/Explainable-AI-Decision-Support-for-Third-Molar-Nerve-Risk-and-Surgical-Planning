@@ -1,0 +1,23 @@
+app:
+  name: "MTM AI Surgical Planning System"
+  version: "1.0.0"
+  environment: "production"
+
+device:
+  use_gpu: true
+
+thresholds:
+  yolo_confidence: 0.4
+  canal_threshold: 0.5
+  tooth_threshold: 0.5
+
+paths:
+  yolo_weights: "weights/yolo/best.pt"
+  canal_weights: "weights/canal_unet/best_model.pt"
+  tooth_weights: "weights/tooth_unet/best_model.pt"
+  resnet_weights: "weights/stage2_resnet/stage2_improved_model.pt"
+  anfis_weights: "weights/anfis/anfis_model.pth"
+
+logging:
+  level: "INFO"
+  log_file: "logs/system.log"

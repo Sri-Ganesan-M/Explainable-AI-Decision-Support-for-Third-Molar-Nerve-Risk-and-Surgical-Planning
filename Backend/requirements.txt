@@ -1,0 +1,34 @@
+# =============================
+# CORE API
+# =============================
+fastapi==0.110.0
+uvicorn[standard]==0.27.1
+python-multipart==0.0.9
+
+# =============================
+# DEEP LEARNING
+# =============================
+torch==2.1.2
+torchvision==0.16.2
+ultralytics==8.1.0
+
+# =============================
+# IMAGE PROCESSING
+# =============================
+opencv-python-headless==4.9.0.80
+Pillow==10.2.0
+scikit-image==0.22.0
+scipy==1.11.4
+numpy==1.26.3
+
+# =============================
+# ML / UTILITIES
+# =============================
+scikit-learn==1.4.0
+pydantic==2.6.1
+PyYAML==6.0.1
+
+# =============================
+# LOGGING / MONITORING
+# =============================
+python-json-logger==2.0.7

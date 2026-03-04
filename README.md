@@ -1,6 +1,6 @@
 # Explainable AI Decision Support for Third Molar Nerve Risk and Surgical Planning
 
-![MTM Vision Output](./Screenshot 2026-03-04 at 3.49.16 PM.png)
+![MTM Vision Output](Screenshot 2026-03-04 at 3.49.16 PM.png)
 *(Example output demonstrating the clinical assessment, including nerve risk, surgical difficulty, and geometric analysis)*
 
 ## 💡 Overview

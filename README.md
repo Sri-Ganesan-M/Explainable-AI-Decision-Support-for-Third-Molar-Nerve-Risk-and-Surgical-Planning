@@ -1,11 +1,15 @@
 # Explainable AI Decision Support for Third Molar Nerve Risk and Surgical Planning
 
-![MTM Vision Output](Screenshot 2026-03-04 at 3.49.16 PM.png)
+![MTM Vision Output](./sample.png)
 *(Example output demonstrating the clinical assessment, including nerve risk, surgical difficulty, and geometric analysis)*
 
 ## 💡 Overview
 
 This project provides an **Explainable AI (XAI)** decision-support system tailored for dental professionals and maxillofacial surgeons. It evaluates the surgical difficulty and the risk of Inferior Alveolar Nerve (IAN) injury during the extraction of Mandibular Third Molars (MTM).
+
+![MTM System Architecture](./arch.png)
+*(System Architecture describing the multi-stage explainable AI pipeline)*
+
 
 Unlike "black-box" AI systems that only provide a final prediction, this pipeline is designed explicitly for **clinical transparency**. It breaks down the decision-making process into interpretable steps, extracting geometric features (e.g., Winter's angle, minimum distance to the nerve canal) from radiographs and using them to compute a transparent risk score, acting as an assistive tool rather than an autonomous diagnostic device.
 

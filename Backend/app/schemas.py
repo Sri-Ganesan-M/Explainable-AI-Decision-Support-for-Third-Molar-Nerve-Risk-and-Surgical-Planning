@@ -13,8 +13,8 @@ class VisualizationResponse(BaseModel):
 class PredictionResponse(BaseModel):
     status: str
     message: str
-    risk_score: Optional[float] = None
-    decision: Optional[str] = None
+    nerve_injury_risk: Optional[Dict[str, Any]] = None
+    surgical_difficulty: Optional[Dict[str, Any]] = None
     geometric_features: Optional[Dict[str, Any]] = None
     cnn_features: Optional[Dict[str, Any]] = None
     visualization: Optional[VisualizationResponse] = None

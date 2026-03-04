@@ -47,31 +47,36 @@ export function UploadPanel({ onPredict, isLoading }: UploadPanelProps) {
     };
 
     return (
-        <Card className="w-full h-full border border-gray-200 shadow-sm bg-white">
-            <CardContent className="p-6 flex flex-col h-full">
-                <h2 className="text-lg font-semibold mb-4 text-gray-800">Upload Panoramic X-Ray</h2>
+        <Card className="w-full h-full border border-slate-200 bg-white shadow-sm rounded-2xl overflow-hidden">
+            <CardContent className="p-6 md:p-8 flex flex-col h-full">
+                <div className="flex items-center space-x-3 mb-6">
+                    <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
+                    <h2 className="text-lg font-bold text-slate-800 tracking-wide">Upload Scan</h2>
+                </div>
 
                 <div
-                    className={`flex-1 flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-8 transition-colors ${isDragging
-                            ? "border-blue-500 bg-blue-50"
-                            : "border-gray-300 bg-gray-50 hover:bg-gray-100"
+                    className={`flex-1 flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-8 transition-all duration-200 ${isDragging
+                        ? "border-blue-500 bg-blue-50 scale-[1.02]"
+                        : "border-slate-300 bg-slate-50 hover:bg-slate-100/50 hover:border-slate-400"
                         }`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                 >
                     {!file ? (
-                        <>
-                            <UploadCloud className="w-12 h-12 text-gray-400 mb-4" />
-                            <p className="text-sm font-medium text-gray-700 mb-1">
-                                Drag and drop your image here
+                        <div className="flex flex-col items-center text-center animate-in fade-in zoom-in-95 duration-300">
+                            <div className="p-4 bg-white border border-slate-100 rounded-full mb-5 shadow-sm">
+                                <UploadCloud className="w-10 h-10 text-blue-500" />
+                            </div>
+                            <p className="text-base font-semibold text-slate-700 mb-1">
+                                Drop your X-Ray here
                             </p>
-                            <p className="text-xs text-gray-500 mb-4">
-                                Supported formats: PNG, JPG, JPEG
+                            <p className="text-sm text-slate-500 mb-6">
+                                Standard formats: PNG, JPG, DICOM (exported)
                             </p>
                             <label htmlFor="file-upload">
-                                <Button variant="outline" className="cursor-pointer" asChild>
-                                    <span>Browse Files</span>
+                                <Button variant="outline" className="cursor-pointer bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:text-blue-600" asChild>
+                                    <span>Browse Local Files</span>
                                 </Button>
                             </label>
                             <input
@@ -82,19 +87,19 @@ export function UploadPanel({ onPredict, isLoading }: UploadPanelProps) {
                                 onChange={handleFileChange}
                                 disabled={isLoading}
                             />
-                        </>
+                        </div>
                     ) : (
-                        <div className="w-full flex-1 flex flex-col items-center justify-center">
-                            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 w-full max-w-sm flex items-center justify-between mb-6">
+                        <div className="w-full flex-1 flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-4 duration-300">
+                            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 w-full max-w-sm flex items-center justify-between mb-8 transition-all">
                                 <div className="flex items-center space-x-3 overflow-hidden">
-                                    <div className="p-2 bg-blue-100 text-blue-600 rounded-md">
+                                    <div className="p-2.5 bg-blue-50 text-blue-600 rounded-lg border border-blue-100">
                                         <FileImage className="w-6 h-6" />
                                     </div>
                                     <div className="truncate text-left">
-                                        <p className="text-sm font-medium text-gray-800 truncate">
+                                        <p className="text-sm font-semibold text-slate-800 truncate">
                                             {file.name}
                                         </p>
-                                        <p className="text-xs text-gray-500">
+                                        <p className="text-xs text-slate-500 font-medium">
                                             {(file.size / 1024 / 1024).toFixed(2)} MB
                                         </p>
                                     </div>
@@ -102,7 +107,7 @@ export function UploadPanel({ onPredict, isLoading }: UploadPanelProps) {
                                 {!isLoading && (
                                     <button
                                         onClick={clearFile}
-                                        className="p-1 text-gray-400 hover:text-red-500 transition-colors"
+                                        className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
                                     >
                                         <X className="w-5 h-5" />
                                     </button>
@@ -112,16 +117,16 @@ export function UploadPanel({ onPredict, isLoading }: UploadPanelProps) {
                             <Button
                                 onClick={handleUpload}
                                 disabled={isLoading}
-                                className="w-full max-w-sm bg-blue-600 hover:bg-blue-700 text-white"
+                                className="w-full max-w-sm bg-blue-600 hover:bg-blue-700 text-white font-semibold tracking-wide shadow-sm transition-all"
                                 size="lg"
                             >
                                 {isLoading ? (
                                     <>
-                                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                        Analyzing Image...
+                                        <Loader2 className="w-5 h-5 mr-3 animate-spin" />
+                                        Analyzing Scan...
                                     </>
                                 ) : (
-                                    "Analyze X-Ray"
+                                    "Analyze Scan"
                                 )}
                             </Button>
                         </div>

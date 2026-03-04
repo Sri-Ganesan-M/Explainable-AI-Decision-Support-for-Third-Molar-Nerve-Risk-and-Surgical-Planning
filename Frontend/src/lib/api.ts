@@ -1,8 +1,15 @@
 export interface PredictResponse {
   status: string;
   message: string;
-  risk_score: number | null;
-  decision: string | null;
+  nerve_injury_risk: {
+    score: number;
+    category: string;
+    recommendation: string;
+  } | null;
+  surgical_difficulty: {
+    score: number;
+    winter_classification: string;
+  } | null;
   geometric_features: {
     winter_angle: number;
     winter_class: string;
@@ -34,7 +41,16 @@ export async function predict(file: File): Promise<PredictResponse> {
   });
 
   if (!response.ok) {
-    throw new Error(`Error: ${response.status} ${response.statusText}`);
+    let errorMessage = `Error: ${response.status} ${response.statusText}`;
+    try {
+      const errorData = await response.json();
+      if (errorData && errorData.detail) {
+        errorMessage = errorData.detail;
+      }
+    } catch {
+      // Fallback to default if not JSON
+    }
+    throw new Error(errorMessage);
   }
 
   return response.json();

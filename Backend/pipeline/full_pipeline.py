@@ -128,26 +128,42 @@ class SurgicalPlanningPipeline:
 
             # ---------------- Stage 5: Fusion ----------------
 
-            proximity = np.exp(-min_dist / 2) if min_dist else 0
+            contact = 1 if (min_dist is not None and min_dist < 1) else 0
+
+            # Geometry proximity logic
+            if contact:
+                geom_prox = 1.0
+            elif min_dist is None:
+                geom_prox = 0.4
+            elif min_dist >= 4:
+                geom_prox = 0.1
+            elif min_dist >= 2:
+                geom_prox = 0.5
+            else:
+                geom_prox = 0.8
+
+            proximity_final = 0.6 * geom_prox + 0.4 * overlap
+
             canal_integrity = 0.6 * interruption + 0.4 * darkening
-            impaction = (winter_angle / 180) if winter_angle else 0.5
-            access = 1 - eruption
-            root_complexity_val = root_complexity if root_complexity else 0.5
 
             feature_vector = torch.tensor([
                 [
-                    proximity,
-                    canal_integrity,
-                    impaction,
-                    access,
-                    root_complexity_val
+                    proximity_final,
+                    canal_integrity
                 ]
             ], dtype=torch.float32).to(self.device)
 
             risk = self.anfis_model.predict(feature_vector).item()
-            decision = self._risk_to_decision(risk)
+            nerve_label, recommendation = self._risk_to_decision(risk)
 
-            # ---------------- Stage 6: Advanced Visualization ----------------
+            # ---------------- Stage 6: Surgical Difficulty ----------------
+
+            root_complexity_norm = 0.5 if root_complexity is None else np.clip((root_complexity - 1.2) / 3.5, 0, 1)
+            impaction = 0.5 if winter_angle is None else np.clip(winter_angle / 90, 0, 1)
+
+            difficulty_score = 0.6 * impaction + 0.4 * root_complexity_norm
+
+            # ---------------- Stage 7: Advanced Visualization ----------------
 
             visualization = generate_full_visualization(
                 roi,
@@ -168,8 +184,15 @@ class SurgicalPlanningPipeline:
             return {
                 "status": "success",
                 "message": "Prediction completed.",
-                "risk_score": float(risk),
-                "decision": decision,
+                "nerve_injury_risk": {
+                    "score": round(float(risk), 3),
+                    "category": nerve_label,
+                    "recommendation": recommendation
+                },
+                "surgical_difficulty": {
+                    "score": round(float(difficulty_score), 3),
+                    "winter_classification": winter_class
+                },
                 "geometric_features": {
                     "winter_angle": winter_angle,
                     "winter_class": winter_class,
@@ -196,19 +219,24 @@ class SurgicalPlanningPipeline:
     # ============================================================
 
     def _risk_to_decision(self, risk):
-        if risk < 0.28:
-            return "Low Risk – Routine Extraction"
-        elif risk < 0.42:
-            return "Moderate Risk – Consider CBCT"
+        if risk < 0.30:
+            nerve_label = "Low Nerve Risk"
+            recommendation = "Routine Extraction \u2013 Nerve Safe"
+        elif risk < 0.60:
+            nerve_label = "Moderate Nerve Risk"
+            recommendation = "Consider CBCT"
         else:
-            return "High Risk – CBCT + Specialist Referral"
+            nerve_label = "High Nerve Risk"
+            recommendation = "CBCT Strongly Advised / Refer"
+            
+        return nerve_label, recommendation
 
     def _failure(self, message):
         return {
             "status": "failed",
             "message": message,
-            "risk_score": None,
-            "decision": None,
+            "nerve_injury_risk": None,
+            "surgical_difficulty": None,
             "geometric_features": None,
             "cnn_features": None,
             "visualization": None

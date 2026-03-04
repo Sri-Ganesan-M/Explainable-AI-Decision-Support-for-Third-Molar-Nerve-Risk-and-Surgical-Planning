@@ -16,7 +16,7 @@ paths:
   canal_weights: "weights/canal_unet/best_model.pt"
   tooth_weights: "weights/tooth_unet/best_model.pt"
   resnet_weights: "weights/stage2_resnet/stage2_improved_model.pt"
-  anfis_weights: "weights/anfis/anfis_model.pth"
+  anfis_weights: "weights/anfis/anfis_nerve_model.pth"
 
 logging:
   level: "INFO"
